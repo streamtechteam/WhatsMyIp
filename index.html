@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>آدرس آی‌پی و اطلاعات شبکه</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+    @font-face {
+        font-family: 'Vazir';
+        src: url('https://rozup.ir/view/3821905/Vazir.ttf') format('truetype');
+    }
+
+    body {
+        font-family: 'Vazir', sans-serif;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .container {
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        max-width: 400px;
+        text-align: center;
+    }
+
+    .header {
+        margin-bottom: 20px;
+    }
+
+    .logo {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        margin-bottom: 20px;
+    }
+
+    h1 {
+        font-size: 24px;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    p {
+        font-size: 16px;
+        color: #333;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+
+    #ipAddress {
+        font-size: 18px;
+        color: #007bff;
+    }
+
+    #ping {
+        font-size: 16px;
+    }
+
+    #refreshBtn {
+        padding: 8px 16px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-family: 'Vazir', sans-serif;
+        margin-top: 20px;
+    }
+
+    #currentDateTime {
+        font-size: 16px;
+    }
+
+    .made-by {
+        font-size: 14px;
+        color: #888;
+        margin-top: 20px;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <img src="https://rozup.ir/view/3827244/logo for aparat.png" alt="Logo" class="logo">
+        <h1>: آدرس آی‌پی و اطلاعات شبکه</h1>
+    </div>
+    <div class="info">
+        <p id="ipAddress">در حال بارگذاری...</p>
+        <p id="ping">پینگ: <span id="pingTime"></span> میلی‌ثانیه</p>
+        <p id="currentDateTime">زمان فعلی: <span id="dateTime"></span></p>
+    </div>
+    <button id="refreshBtn">به‌روزرسانی</button>
+    <p class="made-by">StreamTech طراحی شده توسط</p>
+</div>
+<script> 
+const ipAddress = document.getElementById('ipAddress');
+const pingTime = document.getElementById('pingTime');
+const refreshBtn = document.getElementById('refreshBtn');
+const dateTimeElement = document.getElementById('dateTime');
+
+function getIPAddress() {
+    fetch('https://api64.ipify.org?format=json')
+        .then(response => response.json())
+        .then(data => {
+            ipAddress.textContent = data.ip;
+            const startTime = performance.now();
+            fetch(`https://geolocation-db.com/jsonp/${data.ip}`)
+                .then(() => {
+                    const endTime = performance.now();
+                    const ping = endTime - startTime;
+                    pingTime.textContent = ping.toFixed(2);
+                })
+                .catch(error => {
+                    pingTime.textContent = "خطا در محاسبه پینگ";
+                    console.error('خطا در دریافت اطلاعات: ', error);
+                });
+        })
+        .catch(error => {
+            console.error('خطا در دریافت آدرس آی‌پی: ', error);
+            ipAddress.textContent = "خطا در دریافت آدرس آی‌پی، لطفاً دوباره تلاش کنید.";
+        });
+}
+
+function getCurrentDateTime() {
+    const currentDateTime = new Date();
+    dateTimeElement.textContent = currentDateTime.toLocaleString();
+}
+
+refreshBtn.addEventListener('click', getIPAddress);
+getIPAddress();
+getCurrentDateTime();
+setInterval(getCurrentDateTime, 1000);
+</script>
+</body>
+</html>

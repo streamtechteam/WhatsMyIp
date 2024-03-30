@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>آدرس آی‌پی و اطلاعات شبکه</title>
 <link rel="stylesheet" href="styles.css">
+<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
 <style>
     @font-face {
         font-family: 'Vazir';
@@ -13,7 +14,7 @@
 
     body {
         font-family: 'Vazir', sans-serif;
-        background-color: #f0f0f0;
+        background-color: #f7f7f7;
         margin: 0;
         padding: 0;
         display: flex;
@@ -98,7 +99,7 @@
         <p id="currentDateTime">زمان فعلی: <span id="dateTime"></span></p>
     </div>
     <button id="refreshBtn">به‌روزرسانی</button>
-    <p class="made-by">StreamTech طراحی شده توسط</p>
+    <p class="made-by">StreamTech طراحی شده با ❤️ توسط</p>
 </div>
 <script> 
 const ipAddress = document.getElementById('ipAddress');
@@ -131,7 +132,7 @@ function getIPAddress() {
 
 function getCurrentDateTime() {
     const currentDateTime = new Date();
-    dateTimeElement.textContent = currentDateTime.toLocaleString();
+    dateTimeElement.textContent = currentDateTime.toLocaleString("fa-IR");
 }
 
 refreshBtn.addEventListener('click', getIPAddress);
